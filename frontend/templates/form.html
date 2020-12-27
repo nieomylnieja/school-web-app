@@ -1,0 +1,37 @@
+<div class="register">
+  <div class="register-form">
+    <form id="register" action="table.html" method="post">
+      <h1>Formularz Kontaktowy</h1>
+      <label>
+        <input type="text" name="credentials" placeholder="Imię oraz nazwsiko">
+      </label>
+      <label>
+        <input type="text" name="email" placeholder="jan.kowalski@email.com">
+      </label>
+      <label>
+        <input type="date" name="date" placeholder="Data urodzenia">
+      </label>
+      <label>
+        <input type="password" name="pass" placeholder="Wprowadź hasło">
+      </label>
+      <label>
+        <input type="password" name="pass-re" placeholder="Powtórz hasło">
+      </label>
+      <label>
+        <input type="text" name="description" placeholder="Opis">
+      </label>
+      <button type="submit" name="form-button">Zarejestruj się</button>
+      <div id="m-modal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>Formularz zawiera błędy</h2>
+          </div>
+          <div class="modal-body">
+            <p id="modal-errors"></p>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
