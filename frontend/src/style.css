@@ -80,11 +80,11 @@
 }
 
 .fb-logo {
-    background-image: url("../static/facebook-black-48dp.svg");
+    background-image: url("static/facebook-black-48dp.svg");
 }
 
 .uni-logo {
-    background-image: url("../static/school-black-48dp.svg");
+    background-image: url("static/school-black-48dp.svg");
 }
 
 .register {
@@ -306,19 +306,19 @@ table.t-home input {
 }
 
 .delete-action {
-    background-image: url("../static/delete-black-48dp.svg");
+    background-image: url("static/delete-black-48dp.svg");
 }
 
 .up-action {
-    background-image: url("../static/keyboard_arrow_up-black-48dp.svg");
+    background-image: url("static/keyboard_arrow_up-black-48dp.svg");
 }
 
 .down-action {
-    background-image: url("../static/keyboard_arrow_down-black-48dp.svg");
+    background-image: url("static/keyboard_arrow_down-black-48dp.svg");
 }
 
 .add-action {
-    background-image: url("../static/add-black-48dp.svg");
+    background-image: url("static/add-black-48dp.svg");
 }
 
 #counter {
