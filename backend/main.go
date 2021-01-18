@@ -11,6 +11,7 @@ import (
 	"school-web-app/mongo"
 	"school-web-app/rest"
 	"school-web-app/server"
+	"school-web-app/student"
 	"school-web-app/user"
 )
 
@@ -22,12 +23,14 @@ func main() {
 
 	db := mongo.GetDB()
 	userDao := user.NewDao(db)
+	authSvc := auth.NewService(db, userDao)
 	routers := []server.Router{
 		&rest.Users{Dao: userDao},
-		&rest.Auth{Service: auth.NewService(db, userDao)},
+		&rest.Auth{Service: authSvc},
+		&rest.Students{Dao: student.NewDao(db)},
 	}
-	handler := server.New(routers)
-	logrus.WithField("port", config.Port).Info("starting HTTP server")
 	address := fmt.Sprintf("localhost:%d", config.Port)
+	logrus.WithField("address", config.Port).Info("starting HTTP server")
+	handler := server.New(routers, authSvc)
 	logrus.Fatal(http.ListenAndServe(address, handler))
 }

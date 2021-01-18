@@ -1,6 +1,6 @@
 const methodPost = 'POST';
 const methodGet = 'GET';
-const backendBaseUrl = 'http://localhost:' + 9000;
+const backendBaseUrl = 'http://localhost:3000';
 
 async function doRequest(pattern, method, body) {
     let params = {

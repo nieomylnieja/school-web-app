@@ -27,10 +27,8 @@ type mongoConfig struct {
 }
 
 func (c mongoConfig) getMongoURL() string {
-	u := fmt.Sprintf("mongodb://%s:%s@%s:%d/%s",
+	return fmt.Sprintf("mongodb://%s:%s@%s:%d/%s",
 		c.Username, c.Password, c.Host, c.Port, c.Database)
-	logrus.Info(u)
-	return u
 }
 
 func GetDB() *mongo.Database {

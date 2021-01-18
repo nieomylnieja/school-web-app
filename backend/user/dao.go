@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
@@ -30,14 +31,14 @@ func (d *Dao) Create(user *User) (*User, error) {
 }
 
 func (d *Dao) GetByID(id primitive.ObjectID) (*User, error) {
-	return d.getByFilter(primitive.M{"_id": id})
+	return d.getByFilter(bson.M{"_id": id})
 }
 
 func (d *Dao) GetByEmail(email string) (*User, error) {
-	return d.getByFilter(primitive.M{"email": email})
+	return d.getByFilter(bson.M{"email": email})
 }
 
-func (d *Dao) getByFilter(filter primitive.M) (*User, error) {
+func (d *Dao) getByFilter(filter bson.M) (*User, error) {
 	c := d.db.Collection(collection)
 	var u User
 	err := c.FindOne(context.Background(), filter).Decode(&u)

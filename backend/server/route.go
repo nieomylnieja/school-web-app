@@ -11,9 +11,10 @@ type Router interface {
 }
 
 type Route struct {
-	Name        string
-	Method      string
-	Pattern     string
-	PreHandlers []alice.Constructor
-	HandlerFunc http.HandlerFunc
+	Name                  string
+	Method                string
+	Pattern               string
+	PreHandlers           []alice.Constructor
+	HandlerFunc           http.HandlerFunc
+	RequiresAuthorization bool
 }

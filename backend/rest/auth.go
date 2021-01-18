@@ -3,7 +3,6 @@ package rest
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	"github.com/sirupsen/logrus"
 
@@ -28,9 +27,10 @@ func (a *Auth) Routes() []server.Route {
 			HandlerFunc: a.SignIn,
 		},
 		{
-			Method:      "GET",
-			Pattern:     "/auth/verify",
-			HandlerFunc: a.Verify,
+			Method:                "GET",
+			Pattern:               "/auth/verify",
+			HandlerFunc:           a.Verify,
+			RequiresAuthorization: true,
 		},
 	}
 }
@@ -70,12 +70,7 @@ func (a *Auth) SignIn(w http.ResponseWriter, r *http.Request) {
 	respond(w, res, http.StatusOK)
 }
 
+// the rest of the logic is implemented in the server.authorizationHandler
 func (a *Auth) Verify(w http.ResponseWriter, r *http.Request) {
-	token := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
-	err := a.Service.Verify(token)
-	if err != nil {
-		respondWithError(w, err)
-		return
-	}
 	w.WriteHeader(http.StatusOK)
 }

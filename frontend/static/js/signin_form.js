@@ -5,7 +5,6 @@ let form = document.getElementById("register");
 let modal = document.getElementById("m-modal");
 
 form.addEventListener("submit", (event) => {
-    // TODO how to make it work
     event.preventDefault()
     if (validateForm(event)) {
         const data = Object.fromEntries(new FormData(event.target));

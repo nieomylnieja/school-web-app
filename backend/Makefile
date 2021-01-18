@@ -1,3 +1,5 @@
+export CGO_ENABLED=0
+
 APP_NAME = backend
 ENVFILE=../school-web-app.env.local
 BUILD_DIR=.build

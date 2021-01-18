@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -34,7 +35,7 @@ func (d *dao) SavePassword(password *Password) (*Password, error) {
 func (d *dao) GetPasswordByUserID(userID primitive.ObjectID) (*Password, error) {
 	c := d.db.Collection(collection)
 	var p Password
-	if err := c.FindOne(context.Background(), primitive.M{"userId": userID}).Decode(&p); err != nil {
+	if err := c.FindOne(context.Background(), bson.M{"userId": userID}).Decode(&p); err != nil {
 		return nil, err
 	}
 	p.Password = d.cipher.Decrypt(p.Password)

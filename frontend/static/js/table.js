@@ -1,18 +1,13 @@
-let store = [
-    new Row('Andrzej', 'Bargiel', 50),
-    new Row('Jerzy', 'Kukuczka', 94),
-    new Row('Leszek', 'Cichy', 80),
-    new Row('Wanda', 'Rutkiewicz', 56),
-    new Row('Maciej', 'Berbeka', 65),
-    new Row('Adam', 'Bielecki', 38),
-    new Row('Andrzej', 'Zawada', 41),
-    new Row('Artur', 'Hajzer', 78),
-    new Row('Tomek', 'Mackiewicz', 46),
-]
+import { Get, Post } from "./http.js";
 
-renderTable();
+let store = []
 
-function renderTable() {
+renderTable().then();
+
+async function renderTable() {
+    await Get('/students')
+        .then(resp => resp.json())
+        .then(d => d.forEach(s => store.push(new Row(s.name, s.surname, s.age))))
     document.getElementById("t-button")
         .insertRow(0)
         .insertCell(0)
@@ -22,10 +17,18 @@ function renderTable() {
           ${getCounterElement()}
         </div>
         `;
-    for (let i = 1; i < store.length; i++) {
+    for (let i = 0; i < store.length; i++) {
         insertRow(i);
     }
 }
+
+let form = document.getElementById("table");
+
+form.addEventListener("submit", (event) => {
+    // TODO how to make it work
+    event.preventDefault()
+    console.log("HEY")
+});
 
 function getCounterElement() {
     return `<b>N: ${store.length}</b><a class="add-action" onclick="appendRow()"></a>`
@@ -34,8 +37,8 @@ function getCounterElement() {
 function insertRow(i) {
     let table = document.getElementById("t-home");
     let buttons = document.getElementById("t-button");
-    renderActionButtons(buttons.insertRow(i))
-    let row = table.insertRow(i);
+    renderActionButtons(buttons.insertRow(i + 1))
+    let row = table.insertRow(i + 1);
     let pi = 0;
     for (const v of Object.values(store[i])) {
         renderCell(row, pi, v);

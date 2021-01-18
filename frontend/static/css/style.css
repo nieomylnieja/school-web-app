@@ -159,6 +159,37 @@ table.t-home input {
     border: none;
 }
 
+#t-submit-button {
+    margin: 20px 10px 0 0;
+    padding: 10px 8px;
+    float: right;
+    width: 12%;
+    cursor: pointer;
+    border: 1px solid #81a1c1;
+    overflow: visible;
+    display: inline-block;
+    color: #eceff4;
+    font: bold 1.0em arial, helvetica;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .4);
+    background-color: #81a1c1;
+    transition: background-color .2s ease-out;
+    border-radius: 3px;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, .3),
+    0 1px 0 rgba(255, 255, 255, .5) inset;
+}
+
+#t-submit-button:hover {
+    background-color: #a3be8c;
+    border-color: #88c0d0;
+}
+
+#t-submit-button:active {
+    position: relative;
+    top: 3px;
+    text-shadow: none;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .3) inset;
+}
+
 .register-form {
     padding: 100px;
 }
