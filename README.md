@@ -25,3 +25,9 @@ make run
 ```
 
 - to visit the webpage go to `localhost:FRONTEND_PORT`
+
+---
+
+**repo:** https://github.com/nieomylnieja/school-web-app
+
+**author:** Mateusz Hawrus
