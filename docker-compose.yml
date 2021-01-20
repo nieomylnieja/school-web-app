@@ -1,31 +1,31 @@
 version: "3.8"
 services:
-#  frontend:
-#    build: ./frontend
-#    ports:
-#      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
-#    depends_on:
-#      - backend
-#    environment:
-#      - BACKEND_PORT=${BACKEND_PORT}
-#      - FRONTEND_PORT=${FRONTEND_PORT}
-#
-#  backend:
-#    build: ./backend
-#    depends_on:
-#      - mongo
-#    ports:
-#      - "${BACKEND_PORT}:${BACKEND_PORT}"
-#    environment:
-#      - BACKEND_PORT=${BACKEND_PORT}
-#      - BACKEND_ENCRYPTION_KEY=${BACKEND_ENCRYPTION_KEY}
-#      - JWT_TOKEN_SECRET_KEY=${JWT_TOKEN_SECRET_KEY}
-#      - JWT_TOKEN_EXPIRY=${JWT_TOKEN_EXPIRY}
-#      - MONGO_HOST=mongo
-#      - MONGO_DATABASE=${MONGO_DATABASE}
-#      - MONGO_USERNAME=${MONGO_USERNAME}
-#      - MONGO_PASSWORD=${MONGO_PASSWORD}
-#
+  frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT}
+      - FRONTEND_PORT=${FRONTEND_PORT}
+
+  backend:
+    build: ./backend
+    depends_on:
+      - mongo
+    ports:
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT}
+      - BACKEND_ENCRYPTION_KEY=${BACKEND_ENCRYPTION_KEY}
+      - JWT_TOKEN_SECRET_KEY=${JWT_TOKEN_SECRET_KEY}
+      - JWT_TOKEN_EXPIRY=${JWT_TOKEN_EXPIRY}
+      - MONGO_HOST=mongo
+      - MONGO_DATABASE=${MONGO_DATABASE}
+      - MONGO_USERNAME=${MONGO_USERNAME}
+      - MONGO_PASSWORD=${MONGO_PASSWORD}
+
   mongo:
     image: mongo:3.6.21
     container_name: mongo
