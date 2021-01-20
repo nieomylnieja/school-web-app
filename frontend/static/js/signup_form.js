@@ -34,7 +34,7 @@ function clearErrorDisplay() {
 let errorStore = [];
 
 function validateForm(e) {
-    const fs = [validateCredentials, validateEmail, validateDate, validatePassword, validatePasswordRe, validateDescription];
+    const fs = [validateCredentials, validateEmail, validateDate, validatePassword, validatePasswordRe];
     let invalidCtr = 0;
     fs.forEach(f => f(e) ? null : invalidCtr++);
     if (invalidCtr > 0) {
@@ -88,14 +88,6 @@ function validatePasswordRe(e) {
 }
 
 form.elements["pass-re"].addEventListener("blur", validatePasswordRe)
-
-function validateDescription(e) {
-    let input = form.elements["description"];
-    const cond = (input.value.length <= 20);
-    return validate(cond, e, input, "Opis może zawierać co najwyżej 20 znaków")
-}
-
-form.elements["description"].addEventListener("blur", validateDescription)
 
 function validate(cond, e, input, msg) {
     return cond ? success(e, input) : error(e, input, msg)

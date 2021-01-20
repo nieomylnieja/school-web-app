@@ -1,5 +1,6 @@
 const methodPost = 'POST';
 const methodGet = 'GET';
+const methodPut = 'PUT';
 const backendBaseUrl = 'http://localhost:3000';
 
 async function doRequest(pattern, method, body) {
@@ -31,4 +32,8 @@ export function Get(pattern) {
 
 export function Post(pattern, body) {
     return doRequest(pattern, methodPost, body)
+}
+
+export function Put(pattern, body) {
+    return doRequest(pattern, methodPut, body)
 }

@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if [ -z "$BACKEND_URL" ]; then
-	echo "BACKEND_URL not defined"
+if [ -z "$BACKEND_PORT" ]; then
+	echo "BACKEND_PORT not defined"
 	exit 1
 fi
 
-sed -i "s~localhost:3000~${BACKEND_URL}~g" ./static/js/http.js
+sed -i "s~3000~${BACKEND_PORT}~g" ./static/js/http.js
