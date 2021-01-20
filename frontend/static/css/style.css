@@ -356,3 +356,13 @@ table.t-home input {
     text-align: center;
     color: #d8dee9;
 }
+
+/* hide arrows from number input*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}

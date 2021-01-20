@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/sirupsen/logrus"
@@ -10,7 +11,7 @@ import (
 )
 
 type Students struct {
-	Dao *student.Dao
+	Service *student.Service
 }
 
 func (s *Students) Routes() []server.Route {
@@ -24,7 +25,7 @@ func (s *Students) Routes() []server.Route {
 		{
 			Method:                "PUT",
 			Pattern:               "/students",
-			HandlerFunc:           s.Upsert,
+			HandlerFunc:           s.Put,
 			RequiresAuthorization: true,
 		},
 	}
@@ -32,16 +33,27 @@ func (s *Students) Routes() []server.Route {
 
 func (s *Students) Get(w http.ResponseWriter, r *http.Request) {
 	teacherID := r.Context().Value("userId").(string)
-	res, err := s.Dao.Get(teacherID)
+	res, err := s.Service.Get(teacherID)
 	if err != nil {
 		logrus.WithError(err).Error("failed to fetch students")
 		respond(w, "internal server error", http.StatusInternalServerError)
 		return
 	}
-	logrus.Info(res)
 	respond(w, res, http.StatusOK)
 }
 
-func (s *Students) Upsert(w http.ResponseWriter, r *http.Request) {
-	// TODO how should it be handled? That's a question to frontend really
+func (s *Students) Put(w http.ResponseWriter, r *http.Request) {
+	teacherID := r.Context().Value("userId").(string)
+	var payload []student.Student
+	if err := json.NewDecoder(r.Body).Decode(&payload); err != nil {
+		logrus.WithError(err).Warn("failed to decode json body")
+		respond(w, nil, http.StatusBadRequest)
+		return
+	}
+	res, err := s.Service.Put(teacherID, payload)
+	if err != nil {
+		respondWithError(w, err)
+		return
+	}
+	respond(w, res, http.StatusCreated)
 }

@@ -47,21 +47,21 @@ func (s *Service) SignIn(payload *SignInPayload) (*Token, error) {
 	return s.ts.Generate(u.ID.Hex()), nil
 }
 
-func (s *Service) Verify(token string) (string, error) {
+func (s *Service) Verify(token string) (*Claims, error) {
 	claims, err := s.ts.Validate(token)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	id, err := primitive.ObjectIDFromHex(claims.UserID)
 	if err != nil {
-		return "", errz.New(errz.Unauthorized, "invalid token provided", err)
+		return nil, errz.New(errz.Unauthorized, "invalid token provided", err)
 	}
 	_, err = s.userGetter.GetByID(id)
 	if err != nil {
 		if e, ok := err.(*errz.Error); ok && e.Type() == errz.NotFound {
-			return "", errz.New(errz.Unauthorized, "user provided in token doesn't exist", err)
+			return nil, errz.New(errz.Unauthorized, "user provided in token doesn't exist", err)
 		}
-		return "", err
+		return nil, err
 	}
-	return id.Hex(), nil
+	return claims, nil
 }

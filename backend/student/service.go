@@ -51,32 +51,41 @@ outerUpsert:
 				toBeUpdated = append(toBeUpdated, p)
 				continue outerUpsert
 			}
-			toBeCreated = append(toBeCreated, p)
+		}
+		p.TeacherID = teacherID
+		toBeCreated = append(toBeCreated, p)
+	}
+	var err error
+	var created []Student
+	if toBeCreated != nil {
+		created, err = s.dao.CreateMany(toBeCreated)
+		if err != nil {
+			return nil, err
 		}
 	}
-	created, err := s.dao.CreateMany(toBeCreated)
-	if err != nil {
-		return nil, err
-	}
-	updated, err := s.dao.UpdateMany(teacherID, toBeUpdated)
-	if err != nil {
-		return nil, err
+	updated := make([]Student, len(toBeUpdated))
+	for _, u := range toBeUpdated {
+		u, err := s.dao.Update(teacherID, &u)
+		if err != nil {
+			return nil, err
+		}
+		updated = append(updated, *u)
 	}
 	return append(created, updated...), nil
 }
 
 func (s *Service) handlePutDeletion(teacherID string, payload, existing []Student) error {
-	toBeDeleted := make([]primitive.ObjectID, len(existing)-len(payload))
-	if len(toBeDeleted) > 0 {
-	outerDelete:
-		for _, e := range existing {
-			for _, p := range payload {
-				if e.ID == p.ID {
-					continue outerDelete
-				}
+	var toBeDeleted []primitive.ObjectID
+outerDelete:
+	for _, e := range existing {
+		for _, p := range payload {
+			if e.ID == p.ID || p.ID == primitive.NilObjectID {
+				continue outerDelete
 			}
-			toBeDeleted = append(toBeDeleted, e.ID)
 		}
+		toBeDeleted = append(toBeDeleted, e.ID)
+	}
+	if toBeDeleted != nil {
 		if err := s.dao.DeleteMany(teacherID, toBeDeleted); err != nil {
 			return err
 		}

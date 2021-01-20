@@ -22,7 +22,6 @@ func NewDao(db *mongo.Database) *Dao {
 
 func (d *Dao) Create(user *User) (*User, error) {
 	c := d.db.Collection(collection)
-
 	user.ID = primitive.NewObjectID()
 	if _, err := c.InsertOne(context.Background(), user); err != nil {
 		return nil, err

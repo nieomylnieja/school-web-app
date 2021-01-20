@@ -25,17 +25,17 @@ func newTokenStore() *tokenStore {
 	return &t
 }
 
-type claims struct {
+type Claims struct {
 	Authorized bool   `json:"authorized"`
 	UserID     string `json:"userId"`
 	jwt.StandardClaims
 }
 
 func (t *tokenStore) Generate(userID string) *Token {
-	claims := claims{
+	claims := Claims{
 		Authorized:     true,
 		UserID:         userID,
-		StandardClaims: jwt.StandardClaims{ExpiresAt: int64(t.Expiry)},
+		StandardClaims: jwt.StandardClaims{ExpiresAt: time.Now().Add(t.Expiry).Unix()},
 	}
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := at.SignedString([]byte(t.SecretKey))
@@ -45,8 +45,8 @@ func (t *tokenStore) Generate(userID string) *Token {
 	return &Token{token}
 }
 
-func (t *tokenStore) Validate(tokenString string) (*claims, error) {
-	claims := &claims{}
+func (t *tokenStore) Validate(tokenString string) (*Claims, error) {
+	claims := &Claims{}
 	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(t.SecretKey), nil
 	})

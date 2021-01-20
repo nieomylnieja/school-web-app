@@ -9,10 +9,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
 	"github.com/sirupsen/logrus"
+
+	"school-web-app/auth"
 )
 
 type TokenVerifier interface {
-	Verify(token string) (string, error)
+	Verify(token string) (*auth.Claims, error)
 }
 
 func New(routers []Router, verifier TokenVerifier) *Server {
@@ -65,13 +67,14 @@ func authorizationHandler(verifier TokenVerifier) func(inner http.Handler) http.
 				return
 			}
 			token = strings.TrimPrefix(token, "Bearer ")
-			userID, err := verifier.Verify(token)
+			claims, err := verifier.Verify(token)
 			if err != nil {
 				logrus.WithField("token", token).WithError(err).Error("invalid token provided")
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
-			ctx := context.WithValue(r.Context(), "userId", userID)
+			logrus.WithField("expiresAt", time.Unix(claims.ExpiresAt, 0).Format(time.RFC3339)).Info("authorized token")
+			ctx := context.WithValue(r.Context(), "userId", claims.UserID)
 
 			inner.ServeHTTP(w, r.WithContext(ctx))
 		})

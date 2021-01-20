@@ -3,8 +3,6 @@ import { Get, Put } from "./http.js";
 document.getElementById("t-submit-button")
     .addEventListener("click", async event => {
         await Put('/students', store)
-            .then(resp => resp.json())
-            .then(d => d.forEach(s => store.push(new Row(s.name, s.surname, s.age))))
             .catch(e => console.log(e))
         event.preventDefault()
     });
@@ -16,7 +14,7 @@ renderTable().then();
 async function renderTable() {
     await Get('/students')
         .then(resp => resp.json())
-        .then(d => d.forEach(s => store.push(new Row(s.name, s.surname, s.age))))
+        .then(d => d.forEach(s => store.push(new Row(s.name, s.surname, s.age, s.id))))
         .catch(e => console.log(e))
     document.getElementById("t-button")
         .insertRow(0)
@@ -42,7 +40,8 @@ document.getElementById("t-home")
         } else if (cell === 1) {
             store[row].surname = r.value;
         } else {
-            store[row].age = r.value;
+            const parsed = parseInt(r.value);
+            if (!isNaN(parsed)) store[row].age = parsed;
         }
     });
 
@@ -119,7 +118,7 @@ function addRow() {
     renderActionButtons(document.getElementById("t-button").insertRow(l + 1));
     let table = document.getElementById("t-home");
     let row = table.insertRow(l + 1);
-    store[l] = new Row("", "", "");
+    store[l] = new Row("", "", 0);
     let pi = 0;
     for (const v of Object.values(store[l])) {
         renderCell(row, pi, v);
@@ -134,10 +133,17 @@ function removeById(i) {
 }
 
 function renderCell(row, cell, value) {
-    row.insertCell(cell).innerHTML = `<input type="text" value="${value}">`;
+    if (cell === 2) {
+        row.insertCell(cell).innerHTML = `<input type="number" value="${value}">`;
+    } else {
+        row.insertCell(cell).innerHTML = `<input type="text" value="${value}">`;
+    }
 }
 
 function Row(name, surname, age, id) {
+    const parsed = parseInt(age, 10);
+    if (isNaN(parsed)) age = 0;
+
     this.name = name;
     this.surname = surname;
     this.age = age;

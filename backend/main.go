@@ -24,13 +24,14 @@ func main() {
 	db := mongo.GetDB()
 	userDao := user.NewDao(db)
 	authSvc := auth.NewService(db, userDao)
+	studentSvc := student.NewService(db)
 	routers := []server.Router{
 		&rest.Users{Dao: userDao},
 		&rest.Auth{Service: authSvc},
-		&rest.Students{Dao: student.NewDao(db)},
+		&rest.Students{Service: studentSvc},
 	}
-	address := fmt.Sprintf("localhost:%d", config.Port)
-	logrus.WithField("address", config.Port).Info("starting HTTP server")
+	address := fmt.Sprintf(":%d", config.Port)
+	logrus.WithField("port", config.Port).Info("starting HTTP server")
 	handler := server.New(routers, authSvc)
 	logrus.Fatal(http.ListenAndServe(address, handler))
 }

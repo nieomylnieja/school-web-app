@@ -6,13 +6,13 @@
 make local-env
 ```
 
-- to build and run the `docker-compose` in one step simply run;
+- to build and run the `docker-compose` in one step simply run:
 
 ```
 make
 ```
 
-- to build;
+- to build:
 
 ```
 make build
@@ -24,4 +24,4 @@ make build
 make run
 ```
 
-- to visit the webpage go to `localhost:8080`
+- to visit the webpage go to `localhost:FRONTEND_PORT`
